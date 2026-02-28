@@ -1,24 +1,14 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../../../shared/navbar/navbar';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NavbarComponent],
-  template: `
-    <app-navbar></app-navbar>
-    <div class="dashboard">
-      <h1>🏘️ Dashboard Partenaire Local</h1>
-      <p>Engagez-vous dans le développement de votre région.</p>
-    </div>
-  `,
-  styles: [`
-    .dashboard {
-      padding: 2rem;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-    }
-    h1 { color: #7b2d8b; margin-bottom: 1rem; }
-    p { color: #555; }
-  `]
+  imports: [NavbarComponent, RouterLink],
+  templateUrl: './dashboard.html',
+  styleUrls: ['./dashboard.css']
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+  // Le composant est vide car pas de logique nécessaire pour l'instant
+}

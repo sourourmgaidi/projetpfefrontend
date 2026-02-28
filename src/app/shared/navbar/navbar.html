@@ -1,33 +1,34 @@
-<nav class="navbar" *ngIf="authService.isLoggedIn()">
-  <div class="nav-brand" (click)="goToProfile()" style="cursor: pointer;">
-    <span>🇹🇳</span>
-    <span>Invest<strong>Platform</strong></span>
+<nav class="vertical-navbar" *ngIf="authService.isLoggedIn()">
+  
+  <!-- Brand / Logo -->
+  <div class="nav-brand" (click)="goToProfile()">
+    <span class="brand-name">Invest<strong>Platform</strong></span>
   </div>
   
+  <!-- Navigation Links -->
   <div class="nav-links">
     <ng-container *ngFor="let link of navLinks">
       <a [routerLink]="link.route"
          routerLinkActive="active"
          class="nav-link">
-        <span>{{ link.icon }}</span>
         {{ link.label }}
       </a>
     </ng-container>
   </div>
   
-  <div class="nav-right">
-    <!-- Profil cliquable avec photo -->
-    <div class="profile-menu" (click)="goToProfile()">
+  <!-- User Profile Section (en bas) -->
+  <div class="nav-footer">
+    <div class="profile-section" (click)="goToProfile()">
       <div class="avatar-container">
-        <!-- Photo de profil si disponible -->
+        <!-- Profile photo if available -->
         <img *ngIf="getProfilePhoto()" 
              [src]="getProfilePhoto()" 
              (error)="handleImageError($event)"
-             alt="Photo de profil" 
+             alt="Profile photo" 
              class="avatar-image"
              crossorigin="anonymous">
         
-        <!-- Fallback avec initiales -->
+        <!-- Fallback with initials -->
         <div class="avatar-fallback" 
              [class.hidden]="getProfilePhoto()">
           {{ userInitials }}
@@ -41,7 +42,8 @@
     </div>
     
     <button class="btn-logout" (click)="logout()">
-      🚪 Déconnexion
+      Logout
     </button>
   </div>
+
 </nav>

@@ -1,25 +1,70 @@
-<div class="dashboard-container">
-  <!-- Navbar avec profil cliquable -->
-  <app-navbar></app-navbar>
+<div class="dashboard-layout">
+  <!-- Navbar verticale -->
+  <app-navbar class="dashboard-navbar"></app-navbar>
 
   <!-- Contenu principal -->
-  <main class="dashboard-content">
-    <h1>Dashboard Investisseur</h1>
-    <p>Gérez vos investissements en Tunisie.</p>
-    
-    <div class="stats-cards">
-      <div class="stat-card">
-        <h3>Investissements actifs</h3>
-        <p class="stat-number">0</p>
+  <main class="dashboard-main">
+    <div class="dashboard-content">
+      <header class="dashboard-header">
+        <h1>Investor Dashboard</h1>
+        <p class="welcome-text">Welcome back! Here's your overview</p>
+      </header>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          
+          <div class="stat-details">
+            <h3>Active Investments</h3>
+            <p class="stat-value">0</p>
+            <span class="stat-trend">+0% this month</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+         
+          <div class="stat-details">
+            <h3>Opportunities</h3>
+            <p class="stat-value">0</p>
+            <span class="stat-trend">0 new</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+         
+          <div class="stat-details">
+            <h3>Appointments</h3>
+            <p class="stat-value">0</p>
+            <span class="stat-trend">0 upcoming</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+        
+          <div class="stat-details">
+            <h3>Total Invested</h3>
+            <p class="stat-value">0 TND</p>
+            <span class="stat-trend">0% of goal</span>
+          </div>
+        </div>
       </div>
-      <div class="stat-card">
-        <h3>Opportunités</h3>
-        <p class="stat-number">0</p>
-      </div>
-      <div class="stat-card">
-        <h3>Rendez-vous</h3>
-        <p class="stat-number">0</p>
-      </div>
+
+      <!-- Section des activités récentes -->
+      <section class="recent-activity">
+        <h2>Recent Activity</h2>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-dot"></div>
+            <div class="activity-content">
+              <p>No recent activity</p>
+              <span class="activity-time">Start exploring opportunities</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+     
+      
+         
     </div>
   </main>
 </div>

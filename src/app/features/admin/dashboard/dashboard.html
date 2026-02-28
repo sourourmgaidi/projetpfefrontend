@@ -1,8 +1,44 @@
-<app-navbar></app-navbar>
+<div class="dashboard-layout">
+  <app-navbar></app-navbar>
 
-<div class="dashboard">
-  <h1>Admin Dashboard</h1>
-  <p>Select what you want to manage</p>
+  <div class="dashboard">
+    <div class="dashboard-content">
+      <h1>Admin Dashboard</h1>
+      <p>Select what you want to manage</p>
 
- <a routerLink="/admin/users">Manage Users</a>
+      <div class="admin-cards">
+        <a routerLink="/admin/users" class="admin-card">
+          <div class="card-content">
+            <h3>Manage Users</h3>
+            <p>View, edit, and manage all platform users</p>
+            <span class="card-link">Access →</span>
+          </div>
+        </a>
+
+        <a routerLink="/admin/investments" class="admin-card">
+          <div class="card-content">
+            <h3>Manage Investments</h3>
+            <p>Oversee all investment activities</p>
+            <span class="card-link">Access →</span>
+          </div>
+        </a>
+
+        <a routerLink="/admin/opportunities" class="admin-card">
+          <div class="card-content">
+            <h3>Manage Opportunities</h3>
+            <p>Create and manage investment opportunities</p>
+            <span class="card-link">Access →</span>
+          </div>
+        </a>
+
+        <a routerLink="/admin/appointments" class="admin-card">
+          <div class="card-content">
+            <h3>Manage Appointments</h3>
+            <p>Schedule and track all appointments</p>
+            <span class="card-link">Access →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>

@@ -106,6 +106,28 @@
       </div>
     </div>
 
+    <!-- ======================================== -->
+    <!-- SECTION MOT DE PASSE (NOUVELLE) -->
+    <!-- ======================================== -->
+    <div class="password-section">
+      <div class="section-header">
+        <h3>🔐 Password</h3>
+        <button class="edit-btn" (click)="openPasswordModal()">
+          <span class="btn-icon">🔑</span>
+          <span>Change Password</span>
+        </button>
+      </div>
+
+      <!-- Visualisation mot de passe (caché) -->
+      <div class="info-card">
+        <div class="info-icon">🔒</div>
+        <div class="info-content">
+          <span class="info-label">Password</span>
+          <span class="info-value">••••••••</span>
+        </div>
+      </div>
+    </div>
+
     <!-- PROFIL INFORMATION -->
     <div class="profile-content">
       <div class="section-header">
@@ -880,6 +902,108 @@
         </div>
       </div>
     </div>
+
+    <!-- ======================================== -->
+    <!-- MODAL CHANGEMENT MOT DE PASSE (NOUVELLE) -->
+    <!-- ======================================== -->
+    <!-- ======================================== -->
+<!-- CHANGE PASSWORD MODAL WITH HIDE/SHOW -->
+<!-- ======================================== -->
+<div class="modal-overlay" *ngIf="showPasswordModal" (click)="closePasswordModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>🔑 Change Password</h3>
+      <button class="close-btn" (click)="closePasswordModal()">✕</button>
+    </div>
+    
+    <div class="modal-body">
+      <!-- Old password with toggle -->
+      <div class="form-group">
+        <label for="oldPassword">Old Password</label>
+        <div class="password-input-group">
+          <input
+            [type]="showOldPassword ? 'text' : 'password'"
+            id="oldPassword"
+            [(ngModel)]="oldPassword"
+            placeholder="Enter your old password"
+            class="form-control password-input"
+          />
+          <button 
+            type="button" 
+            class="password-toggle-text"
+            (click)="showOldPassword = !showOldPassword"
+          >
+            {{ showOldPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+      </div>
+      
+      <!-- New password with toggle -->
+      <div class="form-group">
+        <label for="newPassword">New Password</label>
+        <div class="password-input-group">
+          <input
+            [type]="showNewPassword ? 'text' : 'password'"
+            id="newPassword"
+            [(ngModel)]="newPassword"
+            placeholder="Minimum 6 characters"
+            class="form-control password-input"
+          />
+          <button 
+            type="button" 
+            class="password-toggle-text"
+            (click)="showNewPassword = !showNewPassword"
+          >
+            {{ showNewPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <small class="form-hint">Password must be at least 6 characters</small>
+      </div>
+      
+      <!-- Confirm password with toggle -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirm New Password</label>
+        <div class="password-input-group">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            id="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            placeholder="Confirm your new password"
+            class="form-control password-input"
+          />
+          <button 
+            type="button" 
+            class="password-toggle-text"
+            (click)="showConfirmPassword = !showConfirmPassword"
+          >
+            {{ showConfirmPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+      </div>
+      
+      <!-- Error message -->
+      <div *ngIf="passwordError" class="error-message">
+        ⚠️ {{ passwordError }}
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closePasswordModal()" [disabled]="changingPassword">
+        Cancel
+      </button>
+      <button 
+        class="btn-save" 
+        (click)="changePassword()" 
+        [disabled]="changingPassword">
+        <span *ngIf="!changingPassword">Change Password</span>
+        <span *ngIf="changingPassword" class="loading-spinner">
+          <span class="spinner"></span>
+          Changing...
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
   </div>
 
   <!-- Loading -->

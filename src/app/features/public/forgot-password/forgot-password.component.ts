@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth';
+import { Role } from '../../../shared/models/user.model';
 
 @Component({
   selector: 'app-forgot-password',
@@ -18,6 +19,17 @@ export class ForgotPasswordComponent implements OnDestroy {
   successMsg = '';
   emailSent = false;
   
+  // Pour la sélection du rôle (utilisateur non connecté)
+  selectedRole: Role | null = null;
+  roles = [
+    { value: Role.TOURIST, label: 'Touriste' },
+    { value: Role.INVESTOR, label: 'Investisseur' },
+    { value: Role.PARTNER, label: 'Partenaire Économique' },
+    { value: Role.LOCAL_PARTNER, label: 'Partenaire Local' },
+    { value: Role.INTERNATIONAL_COMPANY, label: 'Société Internationale' },
+    { value: Role.ADMIN, label: 'Administrateur' }
+  ];
+  
   // Resend timer
   resendDisabled = false;
   resendTimer = 30;
@@ -29,14 +41,21 @@ export class ForgotPasswordComponent implements OnDestroy {
   ) {}
 
   onSubmitEmail() {
+    // Validation email
     if (!this.email) {
-      this.errorMsg = 'Email is required';
+      this.errorMsg = 'Email est requis';
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.email)) {
-      this.errorMsg = 'Please enter a valid email address';
+      this.errorMsg = 'Veuillez entrer un email valide';
+      return;
+    }
+
+    // Validation du rôle
+    if (!this.selectedRole) {
+      this.errorMsg = 'Veuillez sélectionner votre type de compte';
       return;
     }
 
@@ -44,45 +63,47 @@ export class ForgotPasswordComponent implements OnDestroy {
     this.errorMsg = '';
     this.successMsg = '';
 
-    // Appel au service d'authentification
-    this.authService.forgotPassword(this.email).subscribe({
+    console.log(`📧 Demande pour: ${this.email}, rôle: ${this.selectedRole}`);
+
+    // Appel au service avec le rôle sélectionné
+    this.authService.forgotPassword(this.email, this.selectedRole).subscribe({
       next: (response) => {
         this.loading = false;
         this.emailSent = true;
-        this.successMsg = 'Reset instructions sent to your email';
-        console.log('✅ Reset email sent:', response);
+        this.successMsg = 'Instructions de réinitialisation envoyées à votre email';
+        console.log('✅ Succès:', response);
         
-        // Démarrer le timer pour le bouton "Resend"
+        // Démarrer le timer pour "Resend"
         this.startResendTimer();
       },
       error: (err) => {
         this.loading = false;
-        this.errorMsg = err.message || 'An error occurred. Please try again.';
-        console.error('❌ Forgot password error:', err);
+        // Message générique pour sécurité (ne pas révéler si l'email existe)
+        this.successMsg = 'Si votre email existe, vous recevrez les instructions';
+        this.emailSent = true;
+        console.log('📧 Traitement terminé (mode sécurité)');
       }
     });
   }
 
   resendEmail() {
-    if (this.resendDisabled) return;
+    if (this.resendDisabled || !this.selectedRole) return;
     
     this.loading = true;
     this.errorMsg = '';
-    this.successMsg = '';
 
-    this.authService.forgotPassword(this.email).subscribe({
+    this.authService.forgotPassword(this.email, this.selectedRole).subscribe({
       next: (response) => {
         this.loading = false;
-        this.successMsg = 'Reset instructions resent to your email';
-        console.log('✅ Reset email resent:', response);
-        
-        // Redémarrer le timer
+        this.successMsg = 'Instructions renvoyées à votre email';
+        console.log('✅ Renvoi réussi');
         this.startResendTimer();
       },
       error: (err) => {
         this.loading = false;
-        this.errorMsg = err.message || 'An error occurred. Please try again.';
-        console.error('❌ Resend email error:', err);
+        this.successMsg = 'Si votre email existe, vous recevrez les instructions';
+        this.startResendTimer();
+        console.log('📧 Renvoi traité');
       }
     });
   }
@@ -99,6 +120,10 @@ export class ForgotPasswordComponent implements OnDestroy {
         clearInterval(this.timerInterval);
       }
     }, 1000);
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 
   ngOnDestroy() {

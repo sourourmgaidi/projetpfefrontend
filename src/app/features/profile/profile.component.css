@@ -908,3 +908,106 @@
 .profile-container::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #1d4ed8, #6b21e5);
 }
+/* Password Section - identique à email section */
+.password-section {
+  padding: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Style pour le champ mot de passe dans la modal */
+.modal-body .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.modal-body .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.95rem;
+}
+
+.modal-body .form-group .form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.modal-body .form-group .form-control:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.modal-body .form-group .form-hint {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* Message d'erreur dans la modal */
+.modal-body .error-message {
+  padding: 0.75rem 1rem;
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  border-left: 4px solid #dc2626;
+}
+/* Password input group with Show/Hide button */
+.password-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.password-input {
+  flex: 1;
+}
+
+.password-toggle-text {
+  padding: 0.75rem 1rem;
+  background: #f1f5f9;
+  color: #2563eb;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  min-width: 70px;
+}
+
+.password-toggle-text:hover {
+  background: #e2e8f0;
+  color: #1d4ed8;
+}
+
+.password-toggle-text:active {
+  transform: translateY(1px);
+}
+
+/* Form hint */
+.form-hint {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* Error message */
+.error-message {
+  padding: 0.75rem 1rem;
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  border-left: 4px solid #dc2626;
+}

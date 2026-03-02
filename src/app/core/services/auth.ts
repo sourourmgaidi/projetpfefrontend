@@ -476,24 +476,120 @@ export class AuthService {
     const remaining = parseInt(expiresAt, 10) - Date.now();
     return Math.max(0, Math.floor(remaining / 1000));
   }
+  // ========================================
+// CHANGER LE MOT DE PASSE (UTILISATEUR CONNECTÉ)
+// ========================================
+changePassword(oldPassword: string, newPassword: string): Observable<any> {
+  const token = this.getToken();
+  const role = this.getUserRole();
+  
+  if (!token) {
+    return throwError(() => new Error('Non authentifié'));
+  }
+
+  if (!role) {
+    return throwError(() => new Error('Rôle utilisateur non trouvé'));
+  }
+
+  // Déterminer l'endpoint selon le rôle
+  let endpoint = '';
+  
+  switch (role) {
+    case Role.ADMIN:
+      endpoint = `${this.API_URL}/admin/change-password`;
+      break;
+    case Role.TOURIST:
+      endpoint = `${this.API_URL}/touristes/change-password`;
+      break;
+    case Role.INVESTOR:
+      endpoint = `${this.API_URL}/auth/change-password`;
+      break;
+    case Role.PARTNER:
+      endpoint = `${this.API_URL}/partenaires-economiques/change-password`;
+      break;
+    case Role.LOCAL_PARTNER:
+      endpoint = `${this.API_URL}/partenaires-locaux/change-password`;
+      break;
+    case Role.INTERNATIONAL_COMPANY:
+      endpoint = `${this.API_URL}/international-companies/change-password`;
+      break;
+    default:
+      return throwError(() => new Error(`Rôle non supporté: ${role}`));
+  }
+
+  console.log(`📤 Changement mot de passe - Endpoint: ${endpoint}, Rôle: ${role}`);
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+
+  const body = {
+    oldPassword: oldPassword,
+    newPassword: newPassword
+  };
+
+  return this.http.post(endpoint, body, { headers }).pipe(
+    tap(response => {
+      console.log('✅ Mot de passe changé avec succès:', response);
+    }),
+    catchError(err => {
+      console.error('❌ Erreur changement mot de passe:', err);
+      let errorMsg = 'Erreur lors du changement de mot de passe';
+      
+      if (err.error?.error) {
+        errorMsg = err.error.error;
+      } else if (err.error?.message) {
+        errorMsg = err.error.message;
+      } else if (err.message) {
+        errorMsg = err.message;
+      }
+      
+      return throwError(() => new Error(errorMsg));
+    })
+  );
+}
 
   // ========================================
   // MOT DE PASSE OUBLIÉ
   // ========================================
-  forgotPassword(email: string): Observable<any> {
-    return this.http.post(`${this.API_URL}/auth/forgot-password`, { email }).pipe(
-      tap(response => console.log('✅ Forgot password email sent:', response)),
-      catchError(err => {
-        console.error('❌ Forgot password error:', err);
-        const msg = err.error?.error || err.error?.message || 'Error sending reset email';
-        return throwError(() => new Error(msg));
-      })
-    );
+  // Dans auth.service.ts
+forgotPassword(email: string, role: Role): Observable<any> {
+  let endpoint = '';
+  
+  switch (role) {
+    case Role.ADMIN:
+      endpoint = `${this.API_URL}/admin/forgot-password`;
+      break;
+    case Role.TOURIST:
+      endpoint = `${this.API_URL}/touristes/forgot-password`;
+      break;
+    case Role.INVESTOR:
+      endpoint = `${this.API_URL}/auth/forgot-password`;
+      break;
+    case Role.PARTNER:
+      endpoint = `${this.API_URL}/partenaires-economiques/forgot-password`;
+      break;
+    case Role.LOCAL_PARTNER:
+      endpoint = `${this.API_URL}/partenaires-locaux/forgot-password`;
+      break;
+    case Role.INTERNATIONAL_COMPANY:
+      endpoint = `${this.API_URL}/international-companies/forgot-password`;
+      break;
+    default:
+      endpoint = `${this.API_URL}/auth/forgot-password`;
   }
 
-  // ========================================
-  // ✅ MÉTHODES POUR LA GESTION DES PHOTOS
-  // ========================================
+  return this.http.post(endpoint, { email }).pipe(
+    catchError(err => {
+      console.error('Erreur forgot password:', err);
+      return throwError(() => new Error('Erreur lors de l\'envoi'));
+    })
+  );
+}
+
+ 
+  
 
   /**
    * Mettre à jour la photo de profil de l'utilisateur courant
